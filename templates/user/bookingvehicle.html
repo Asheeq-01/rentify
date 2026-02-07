@@ -1,0 +1,304 @@
+{% extends "user/base.html" %}
+{% load static %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="{% static 'css/view.css' %}">
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-5">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a href="{% url 'bookings:user-home' %}" class="text-decoration-none text-muted d-flex align-items-center gap-2">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="breadcrumb-item active text-primary fw-bold small" aria-current="page">{{ vehicle.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- Left Column - Images & Description -->
+        <div class="col-lg-8">
+            <div class="hero-card bg-white">
+                <!-- Image Gallery -->
+                <div class="vehicle-carousel position-relative">
+                    <div id="vehicleCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <!-- Indicators -->
+                {% if vehicle.image2 or vehicle.image3 %}
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#vehicleCarousel" data-bs-slide-to="0" class="active"></button>
+                    {% if vehicle.image2 %}
+                    <button type="button" data-bs-target="#vehicleCarousel" data-bs-slide-to="1"></button>
+                    {% endif %}
+                    {% if vehicle.image3 %}
+                    <button type="button" data-bs-target="#vehicleCarousel" data-bs-slide-to="2"></button>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Images -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{ vehicle.image1.url }}" alt="{{ vehicle.name }}" class="w-100">
+                    </div>
+
+                    {% if vehicle.image2 %}
+                    <div class="carousel-item">
+                        <img src="{{ vehicle.image2.url }}" alt="{{ vehicle.name }} image 2" class="w-100">
+                    </div>
+                    {% endif %}
+
+                    {% if vehicle.image3 %}
+                    <div class="carousel-item">
+                        <img src="{{ vehicle.image3.url }}" alt="{{ vehicle.name }} image 3" class="w-100">
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Controls -->
+                {% if vehicle.image2 or vehicle.image3 %}
+                <button class="carousel-control-prev" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#vehicleCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+                {% endif %}
+            </div>
+                    
+                    <!-- Image Counter -->
+                    {% if vehicle.image2 %}
+                    <div class="image-counter">
+                        1 / 3
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Availability Badge -->
+                    <div class="floating-badge">
+                        <span class="badge {% if vehicle.available %}badge-available{% else %}badge-unavailable{% endif %}">
+                            <i class="bi {% if vehicle.available %}bi-check-circle{% else %}bi-x-circle{% endif %} me-1"></i>
+                            {% if vehicle.available %}Available Now{% else %}Currently Booked{% endif %}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Vehicle Details -->
+                <div class="p-4 p-md-5">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h1 class="fw-bold mb-2">{{ vehicle.name }}</h1>
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-tag me-1"></i>
+                                Premium {{ vehicle.get_type_display }} • 
+                                <i class="bi bi-star-fill text-warning ms-2 me-1"></i>
+                                4.8 (120 reviews)
+                            </p>
+                        </div>
+                        <div class="text-end">
+                            <div class="price-tag">₹{{ vehicle.price }}</div>
+                            <small class="text-muted">per day</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Highlight Feature -->
+                    <div class="highlight-text mb-4">
+                        <h5 class="fw-bold d-flex align-items-center gap-2 mb-2">
+                            <i class="bi bi-lightning-charge-fill text-primary"></i>
+                            Premium Experience
+                        </h5>
+                        <p class="mb-0">
+                            The {{ vehicle.name }} represents the pinnacle of its class, offering a refined driving experience 
+                            tailored for both corporate assignments and leisure travel.
+                        </p>
+                    </div>
+                    
+                    <!-- Detailed Description -->
+                    <h5 class="section-title fw-bold">Vehicle Overview</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="feature-icon me-3">
+                                    <i class="bi bi-gear"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0">{{ vehicle.get_type_display }} Transmission</h6>
+                                    <small class="text-muted">Smooth automatic gearbox</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="feature-icon me-3">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0">{{vehicle.seats}} Seater</h6>
+                                    <small class="text-muted">Comfortable for all passengers</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-muted lh-lg mb-0">
+                        Every unit in our fleet undergoes rigorous aesthetic and mechanical detailing to ensure it meets 
+                        our "Signature Standard." This {{ vehicle.get_type_display }} features an ergonomic cabin designed 
+                        for passenger tranquility and driver focus, with premium materials and advanced noise insulation 
+                        for a serene journey.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <style>
+            
+            
+        </style>
+
+        <!-- Right Column - Booking & Specs -->
+        <div class="col-lg-4 sticky-wrapper">
+            <!-- Booking Card -->
+            <div class="card hero-card p-4 mb-4 position-sticky">
+                <h5 class="fw-bold mb-4">Book This Vehicle</h5>
+                
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted">Base Rate (24h)</span>
+                        <span class="fw-bold fs-5">₹{{ vehicle.price }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted">Insurance Included</span>
+                        <span class="text-success fw-bold">Free</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Delivery Charge</span>
+                        <span class="text-success fw-bold">Free</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Estimated Total</span>
+                        <span class="price-tag">₹{{ vehicle.price }}</span>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-3">
+                    {% if vehicle.available %}
+                    <a class="btn btn-primary btn-lg py-3 fw-bold rounded-3" id="bookNowBtn" href="{% url 'bookings:book-form' vehicle.id %}">
+                        <i class="bi bi-calendar-check me-2"></i>
+                        Book Now
+                    </a>
+                    {% else %}
+                    <button class="btn btn-secondary btn-lg py-3 fw-bold rounded-3" disabled>
+                        <i class="bi bi-clock-history me-2"></i>
+                        Currently Unavailable
+                    </button>
+                    {% endif %}
+                    <a href="https://wa.me/918590995951?text=Hi%20I%20am%20interested%20in%20booking%20the%20vehicle%20{{ vehicle.name }}%20priced%20at%20₹{{ vehicle.price }}%20per%20day."
+                        target="_blank" class="btn btn-light btn-lg py-3 fw-bold rounded-3">
+                            <i class="bi bi-whatsapp me-2 text-success"></i>
+                            Chat with Agent</a>
+                </div>
+                <div class="mt-4 text-center">
+                    <small class="text-muted">
+                        <i class="bi bi-shield-check me-1 text-success"></i>
+                        Free cancellation up to 24 hours before pickup
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="row mt-5 g-4">
+        <div class="col-12">
+            <h3 class="section-title fw-bold">Included Amenities</h3>
+        </div>
+        <div class="col-md-3">
+            <div class="spec-card p-4 text-center h-100">
+                <div class="feature-icon mx-auto">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <h6 class="fw-bold mb-2">Comprehensive Insurance</h6>
+                <p class="small text-muted mb-0">Full coverage with zero deductibles for complete peace of mind.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="spec-card p-4 text-center h-100">
+                <div class="feature-icon mx-auto">
+                    <i class="bi bi-truck"></i>
+                </div>
+                <h6 class="fw-bold mb-2">Free Delivery & Pickup</h6>
+                <p class="small text-muted mb-0">To airport, hotel, or any location within city limits.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="spec-card p-4 text-center h-100">
+                <div class="feature-icon mx-auto">
+                    <i class="bi bi-headset"></i>
+                </div>
+                <h6 class="fw-bold mb-2">24/7 Roadside Assistance</h6>
+                <p class="small text-muted mb-0">Dedicated support team available round the clock.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="spec-card p-4 text-center h-100">
+                <div class="feature-icon mx-auto">
+                    <i class="bi bi-snow"></i>
+                </div>
+                <h6 class="fw-bold mb-2">Premium Maintenance</h6>
+                <p class="small text-muted mb-0">Fully sanitized and detailed before every trip.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Similar Vehicles -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="section-title fw-bold mb-0">Similar Vehicles</h3>
+                <a href="{% url 'bookings:user-home' %}" class="text-decoration-none text-primary fw-medium">
+                    View All <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+            <!-- Add similar vehicles carousel here -->
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/bookingview.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update image counter
+        const carousel = document.getElementById('vehicleCarousel');
+        if (carousel) {
+            carousel.addEventListener('slid.bs.carousel', function(event) {
+                const activeIndex = event.to;
+                const totalItems = document.querySelectorAll('#vehicleCarousel .carousel-item').length;
+                document.querySelector('.image-counter').textContent = `${activeIndex + 1} / ${totalItems}`;
+            });
+        }
+        
+        // Book Now button functionality
+        const bookNowBtn = document.getElementById('bookNowBtn');
+        if (bookNowBtn) {
+            bookNowBtn.addEventListener('click', function() {
+                // Add booking logic here
+                {% comment %} window.location.href = "{% url 'bookings:booking-form' vehicle.id %}"; {% endcomment %}
+            });
+        }
+        
+        // Add smooth hover effects
+        const cards = document.querySelectorAll('.spec-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>
+{% endblock %}

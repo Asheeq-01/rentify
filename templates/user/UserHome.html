@@ -1,0 +1,153 @@
+{% extends "user/base.html" %}
+{% load static %}
+
+{% block content %}
+
+  
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<script src="{% static 'js/home.js' %}"></script>
+
+
+<section class="hero-section text-white position-relative overflow-hidden">
+  <div class="hero-bg-overlay"></div>
+  <div class="container position-relative z-2">
+    <div class="row align-items-center min-vh-80 pt-5">
+      <div class="col-lg-7 text-center text-lg-start">
+        <div class="animate-fade-up">
+            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mb-3">
+                <span class="spinner-grow spinner-grow-sm me-2" role="status"></span>Live: 24 New Cars Added Today
+            </span>
+        </div>
+        <h1 class="display-3 fw-extrabold mb-4 animate-fade-up">Drive the <span class="text-primary-gradient">Experience</span>, Not Just a Car</h1>
+        <p class="lead opacity-90 mb-5 animate-fade-up delay-1">
+            
+            <span class="d-block mt-2 text-warning small fw-bold"><i class="bi bi-patch-check"></i> 100% Sanitized & Insurance-First Fleet</span>
+        </p>
+        
+        <div class="search-glass p-2 mb-5 animate-fade-up delay-2 shadow-lg">
+          <div class="row g-0 align-items-center">
+            <div class="col-md-5 border-end border-white-50">
+              <div class="input-group px-3 py-2">
+                <span class="text-white opacity-50"><i class="bi bi-search"></i></span>
+                <input type="text" id="vehicleSearch" class="form-control bg-transparent border-0 text-white placeholder-white shadow-none" placeholder="Search by car name or model...">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group px-3 py-2">
+                <span class="text-white opacity-50"><i class="bi bi-filter-circle"></i></span>
+                <select class="form-select bg-transparent border-0 text-white shadow-none cursor-pointer" id="categoryFilter">
+                    <option class="text-dark" value="all">Any Category</option>
+                    <option class="text-dark" value="CAR">car</option>
+                    <option class="text-dark" value="BIKE">bike</option>
+                    <option class="text-dark" value="VAN">van</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3 p-1">
+              <button class="btn btn-primary w-100 py-3 rounded-3 fw-bold shadow-glow border-0">Find My Ride</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-5 d-none d-lg-block">
+        <div class="animate-float hero-img-container">
+          <img src="https://cdni.iconscout.com/illustration/premium/thumb/car-rental-service-4485532-3723315.png" class="img-fluid" alt="Rentify Car">
+          <div class="floating-card p-3 shadow-lg">
+             <h6 class="mb-1 fw-bold">₹0 Deposit</h6>
+             <p class="x-small mb-0 text-muted">First-time users</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="bg-white py-4 border-bottom">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-md-3 col-6 border-end-md">
+                <h4 class="fw-bold mb-0">15k+</h4>
+                <p class="text-muted small mb-0">Happy Travelers</p>
+            </div>
+            <div class="col-md-3 col-6 border-end-md">
+                <h4 class="fw-bold mb-0">500+</h4>
+                <p class="text-muted small mb-0">Premium Cars</p>
+            </div>
+            <div class="col-md-3 col-6 border-end-md">
+                <h4 class="fw-bold mb-0">24/7</h4>
+                <p class="text-muted small mb-0">On-road Support</p>
+            </div>
+            <div class="col-md-3 col-6">
+                <h4 class="fw-bold mb-0">0.0%</h4>
+                <p class="text-muted small mb-0">Hidden Charges</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="vehicles" class="py-5 bg-soft-light">
+  <div class="container py-4">
+    <div class="row mb-5 align-items-end">
+        <div class="col-md-6">
+            <h2 class="fw-black mb-1 display-5">The Elite Collection</h2>
+            <p class="text-muted fs-5">Premium comfort for your next destination</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <div class="filter-pills d-inline-flex gap-2 p-2 bg-white rounded-pill shadow-premium border-0">
+                <button class="btn filter-btn active" data-filter="all">All Fleet</button>
+                <button class="btn filter-btn" data-filter="CAR">cars</button>
+                <button class="btn filter-btn" data-filter="BIKE">bikes</button>
+                <button class="btn filter-btn" data-filter="VAN">van</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row g-4" id="fleetGrid">
+      {% csrf_token %}
+      {% for i in view %}
+      <div class="col-xl-3 col-lg-4 col-md-6 vehicle-item " data-category="{{i.type}}" data-name="{{ i.name|lower }}">
+        <div class="premium-card">
+          <div class="card-img-container">
+            <img src="{{ i.image1.url }}" class="premium-img" alt="{{ i.name }}">
+            
+            <div class="glass-badge price-pill">
+                <span class="currency">₹</span>{{ i.price }} <span class="duration">/ day</span>
+            </div>
+            
+            <div class="status-indicator {{ i.available|lower }}">
+                <span class="dot"></span> {{ i.available }}
+            </div>
+          </div>
+          
+          <div class="card-content">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="vehicle-title">{{ i.name }}</h4>
+                <div class="rating-tag">
+                    <i class="bi bi-star-fill"></i> <span>4.9</span>
+                </div>
+            </div>
+            
+            <div class="premium-specs">
+              <div class="spec-item"><i class="bi bi-person"></i> {{ i.seats }} Seats</div>
+              <div class="spec-item"><i class="bi bi-lightning-charge"></i> {{ i.transmission}}</div>
+              <div class="spec-item"><i class="bi bi-droplet"></i> {{ i.fuel_type }}</div>
+            </div>
+            
+            <div class="card-actions mt-4">
+               <a href="{% url 'bookings:bookingVehicle' i.id %}" class="btn btn-premium-action"> 
+                  Book Now
+                </a>
+                <button class="wishlist-btn"><i class="bi bi-suit-heart"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
+

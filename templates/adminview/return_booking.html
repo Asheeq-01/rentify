@@ -1,0 +1,23 @@
+{% extends "adminview/base.html" %}
+
+{% block page_title %}Return Vehicle{% endblock %}
+
+{% block content %}
+<div class="card p-4">
+    <h4 class="mb-3">Confirm Vehicle Return</h4>
+
+    <p><strong>User:</strong> {{ booking.user.username }}</p>
+    <p><strong>Vehicle:</strong> {{ booking.vehicle.name }}</p>
+    <p><strong>End Date:</strong> {{ booking.end_date }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">
+            Confirm Return
+        </button>
+        <a href="{% url 'adminpanel:admin-dashboard' %}" class="btn btn-secondary">
+            Cancel
+        </a>
+    </form>
+</div>
+{% endblock %}

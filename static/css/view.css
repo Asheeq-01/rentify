@@ -1,0 +1,212 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.05);
+    --radius-xl: 24px;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+}
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: #f8fafc; 
+    color: #1e293b;
+}
+
+.hero-card { 
+    border-radius: var(--radius-xl); 
+    overflow: hidden; 
+    border: none; 
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.3s ease;
+}
+
+.hero-card:hover {
+    transform: translateY(-2px);
+}
+
+.vehicle-carousel {
+    position: relative;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    overflow: hidden;
+}
+
+.vehicle-carousel img { 
+    object-fit: cover; 
+    height: 500px; 
+    width: 100%; 
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.vehicle-carousel:hover .carousel-control-prev,
+.vehicle-carousel:hover .carousel-control-next {
+    opacity: 1;
+}
+
+.spec-card { 
+    background: #ffffff; 
+    border: 1px solid #e2e8f0; 
+    border-radius: var(--radius-lg); 
+    transition: all 0.3s ease; 
+    height: 100%;
+}
+
+.spec-card:hover { 
+    transform: translateY(-8px); 
+    box-shadow: var(--shadow-lg);
+    border-color: #cbd5e1;
+}
+
+.feature-icon { 
+    width: 56px; 
+    height: 56px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: var(--radius-md); 
+    background: #f0f4ff; 
+    color: #0d6efd; 
+    font-size: 1.5rem; 
+    margin-bottom: 1rem;
+}
+
+.price-tag { 
+    font-size: 2.5rem; 
+    font-weight: 800; 
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.breadcrumb {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    box-shadow: var(--shadow-md);
+}
+
+.breadcrumb-item + .breadcrumb-item::before { 
+    content: "›"; 
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+.badge-available { 
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); 
+    color: #065f46;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.badge-unavailable {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #991b1b;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(13, 110, 253, 0.3);
+}
+
+.btn-outline-dark {
+    border-width: 2px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    position: relative;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--primary-gradient);
+    border-radius: 2px;
+}
+
+.spec-table tr {
+    transition: background-color 0.2s ease;
+}
+
+.spec-table tr:hover {
+    background-color: #f8fafc;
+}
+
+.floating-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius-md);
+}
+
+.image-counter {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    z-index: 10;
+}
+
+.highlight-text {
+    background: linear-gradient(120deg, #e0f2fe 0%, #f0f9ff 100%);
+    border-left: 4px solid #0d6efd;
+    padding: 1.5rem;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.sticky-wrapper {
+    position: relative;
+    min-height: 50vh;      /* stop point */
+    padding-bottom: 1px;  /* critical for sticky calculations */
+}
+
+.hero-card {
+    position: sticky;
+    top: 120px;            /* navbar offset */
+}

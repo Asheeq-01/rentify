@@ -1,0 +1,43 @@
+{% extends 'user/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">Payment Details</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <!-- Booking Summary -->
+                    <h5 class="mb-3">Booking Summary</h5>
+                    <p><strong>Vehicle:</strong> {{ booking.vehicle.name }}</p>
+                    <p><strong>From:</strong> {{ booking.start_date }}</p>
+                    <p><strong>To:</strong> {{ booking.end_date }}</p>
+                    <p><strong>Total Amount:</strong> ₹{{ booking.total_amount }}</p>
+
+                    <hr>
+
+                    <!-- Payment Form -->
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+
+                        <div class="d-grid mt-3">
+                            <button type="submit" class="btn btn-success">
+                                Proceed to Pay
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
