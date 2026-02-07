@@ -151,10 +151,10 @@ class ReturnBookingView(AdminRequiredMixin, View):
 
 
 
-
+from django.urls import reverse_lazy
 class AddVehicleView(AdminRequiredMixin, CreateView):
     model = VehicleModel
     form_class = VehicleForm
     template_name = 'adminView/add_vehicle.html'
     # Ensure 'vehicle_list' is a valid URL name in your urls.py
-   
+    success_url = reverse_lazy("add-vehicle")
