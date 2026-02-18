@@ -148,12 +148,17 @@
               <li class="nav-item">
                 <a class="nav-link" href="#">Offers</a>
               </li>
-              <li class="nav-item">
+              
+              {% if user.is_authenticated %}
+                <li class="nav-item">
                 <a href="{% url 'bookings:my-bookings' %}" class="nav-link">
                     My Bookings
                 </a>
                 
               </li>
+              {% endif %}
+                
+              
               {% comment %} <li class="nav-item">
                 <a class="nav-link" href="{% url 'bookings:my-booking' %}">My Bookings</a>
               </li> {% endcomment %}
@@ -163,7 +168,7 @@
               {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle btn-account d-flex align-items-center" href="#" id="userDrop" role="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle me-2 fs-5"></i> Hi, {{ user.username|capfirst }}
+                        <i class="bi bi-person-circle me-2 fs-5"></i>{{ user.username|capfirst }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDrop">
                         {% comment %} <li>
@@ -186,7 +191,7 @@
                 </li>
               {% else %}
                 <li class="nav-item">
-                    <a href="#" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Sign In</a>
+                    <a href="{% url 'accounts:login' %}" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Log In</a>
                 </li>
               {% endif %}
             </ul>

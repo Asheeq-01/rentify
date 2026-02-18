@@ -7,7 +7,7 @@ from .models import VehicleModel, BookingModel, OrderModel
 from .forms import BookingForm, Order_form
 from datetime import date
 import razorpay
-
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -26,7 +26,7 @@ class BookVehiclePage(View):
     
     
     
-    
+@method_decorator(login_required,name="dispatch")
 class BookingFormPage(View):
     def get(self,request,pk):
         vehicle=VehicleModel.objects.get(id=pk)
@@ -66,7 +66,7 @@ class BookingFormPage(View):
 
 
             
-            
+@method_decorator(login_required,name="dispatch")
 class PaymentView(View):
 
     def get(self,request,booking_id):
@@ -115,13 +115,13 @@ class PaymentView(View):
             'booking': booking
         })
 
-
+@method_decorator(login_required,name="dispatch")
 class PaymentSuccessPage(View):
     def get(self, request):
         return render(request, 'user/payment_success.html')
 
 
-
+@method_decorator(login_required,name="dispatch")
 @method_decorator(csrf_exempt, name='dispatch')
 class PaymentSuccessView(View):
     def post(self, request):
@@ -153,7 +153,7 @@ class PaymentSuccessView(View):
         return redirect('bookings:payment_success')
 
 
-
+@method_decorator(login_required,name="dispatch")
 class MyBookingsView(View):
     def get(self, request):
         bookings = BookingModel.objects.filter(user=request.user
