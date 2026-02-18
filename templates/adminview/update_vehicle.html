@@ -1,0 +1,240 @@
+{% extends "adminView/base.html" %}
+{% block content %}
+
+<div class="container-fluid px-4 py-5 bg-light">
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-9">
+
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'adminpanel:vehicle-list' %}" class="text-decoration-none text-muted">Vehicles</a></li>
+          <li class="breadcrumb-item active text-primary" aria-current="page">Update Vehicle</li>
+        </ol>
+      </nav>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0 rounded-3 mb-4" role="alert">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+              <div>{{ message }}</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="card-header border-0 py-4 position-relative overflow-hidden" style="background: linear-gradient(135deg, #3b82f6 0%, #2dd4bf 100%);">
+          <div class="position-absolute top-0 end-0 p-3 opacity-10">
+            <i class="bi bi-pencil-square" style="font-size: 10rem; color: white;"></i>
+          </div>
+          
+          <div class="d-flex align-items-center justify-content-between position-relative z-1">
+            <div class="text-white">
+              <h3 class="mb-1 fw-bold">Update {{ form.name.value }}</h3>
+              <p class="mb-0 opacity-75">Modify the vehicle details and save changes.</p>
+            </div>
+            <a href="{% url 'adminpanel:vehicle-list' %}" class="btn btn-light btn-sm rounded-pill shadow-sm px-3 fw-semibold text-primary">
+              <i class="bi bi-arrow-left me-1"></i> Back to List
+            </a>
+          </div>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+          <form method="post" enctype="multipart/form-data" novalidate id="vehicleForm">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger rounded-3 mb-4">
+                <i class="bi bi-exclamation-circle me-2"></i> {{ form.non_field_errors }}
+              </div>
+            {% endif %}
+
+            <section class="mb-5">
+              <h6 class="text-uppercase text-muted fw-bold mb-4 ls-1">
+                <i class="bi bi-card-text me-2"></i>Basic Details
+              </h6>
+              
+              <div class="row g-4">
+                <div class="col-md-8">
+                  <div class="form-floating">
+                    <input type="text" name="{{ form.name.name }}" id="{{ form.name.auto_id }}"
+                           class="form-control {% if form.name.errors %}is-invalid{% endif %}"
+                           value="{{ form.name.value|default:'' }}" placeholder="Vehicle Name" required>
+                    <label for="{{ form.name.auto_id }}">{{ form.name.label }}*</label>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-floating">
+                    <input type="text" name="{{ form.vehicle_no.name }}" id="{{ form.vehicle_no.auto_id }}"
+                           class="form-control text-uppercase {% if form.vehicle_no.errors %}is-invalid{% endif %}"
+                           value="{{ form.vehicle_no.value|default:'' }}" placeholder="Registration Number">
+                    <label for="{{ form.vehicle_no.auto_id }}">{{ form.vehicle_no.label }}</label>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold small text-muted">{{ form.type.label }}</label>
+                  <select name="{{ form.type.name }}" id="{{ form.type.auto_id }}" class="form-select form-select-lg">
+                    {% for value, label in form.fields.type.choices %}
+                      <option value="{{ value }}" {% if form.type.value == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold small text-muted">{{ form.price.label }}</label>
+                  <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-white text-muted"><i class="bi bi-currency-rupee"></i></span>
+                    <input type="number" name="{{ form.price.name }}" id="{{ form.price.auto_id }}"
+                           class="form-control" value="{{ form.price.value|default:'' }}">
+                    <span class="input-group-text bg-light text-muted fs-6">/ day</span>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                   <label class="form-label fw-semibold small text-muted">{{ form.seats.label }}</label>
+                   <div class="input-group input-group-lg">
+                    <input type="number" name="{{ form.seats.name }}" id="{{ form.seats.auto_id }}"
+                           class="form-control" value="{{ form.seats.value|default:'2' }}">
+                    <span class="input-group-text bg-white text-muted"><i class="bi bi-person-fill"></i></span>
+                   </div>
+                </div>
+              </div>
+            </section>
+
+            <hr class="my-5 border-secondary opacity-10">
+
+            <section class="mb-5">
+              <h6 class="text-uppercase text-muted fw-bold mb-4 ls-1">
+                <i class="bi bi-gear-wide-connected me-2"></i>Specifications
+              </h6>
+
+              <div class="row g-4 align-items-end">
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold small text-muted">{{ form.fuel_type.label }}</label>
+                  <select name="{{ form.fuel_type.name }}" id="{{ form.fuel_type.auto_id }}" class="form-select form-select-lg">
+                    {% for value, label in form.fields.fuel_type.choices %}
+                      <option value="{{ value }}" {% if form.fuel_type.value == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold small text-muted">{{ form.transmission.label }}</label>
+                  <select name="{{ form.transmission.name }}" id="{{ form.transmission.auto_id }}" class="form-select form-select-lg">
+                    {% for value, label in form.fields.transmission.choices %}
+                      <option value="{{ value }}" {% if form.transmission.value == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="bg-light p-3 rounded-3 d-flex align-items-center justify-content-between border">
+                    <div>
+                      <label class="form-check-label fw-bold text-dark" for="{{ form.available.auto_id }}">Availability</label>
+                      <div class="small text-muted">Currently active?</div>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" role="switch" 
+                             name="{{ form.available.name }}" id="{{ form.available.auto_id }}"
+                             {% if form.available.value %}checked{% endif %} 
+                             style="width: 3rem; height: 1.5rem;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <hr class="my-5 border-secondary opacity-10">
+
+            <section class="mb-5">
+              <h6 class="text-uppercase text-muted fw-bold mb-4 ls-1">
+                <i class="bi bi-images me-2"></i>Gallery (Update Images)
+              </h6>
+              
+              <div class="row g-4">
+                {% for field in form %}
+                  {% if 'image' in field.name %}
+                  <div class="col-md-4">
+                    <label class="form-label fw-semibold small text-muted">{{ field.label }}</label>
+                    <div class="image-upload-wrapper {% if field.errors %}border-danger{% endif %}">
+                      <input type="file" name="{{ field.name }}" id="{{ field.auto_id }}"
+                             class="d-none image-input" accept="image/*" onchange="handleImagePreview(this)">
+                      
+                      <label for="{{ field.auto_id }}" class="upload-label">
+                        <div class="upload-placeholder text-center p-4 {% if field.value %}d-none{% endif %}">
+                          <i class="bi bi-cloud-arrow-up-fill fs-3 text-primary d-block mb-2"></i>
+                          <span class="small fw-bold">Upload New</span>
+                        </div>
+                        <div class="preview-container text-center {% if not field.value %}d-none{% endif %}">
+                          <img src="{% if field.value %}{{ field.value.url }}{% endif %}" class="img-preview img-fluid rounded-3 mb-2">
+                          <button type="button" class="btn btn-sm btn-outline-danger w-100" onclick="removeImage(this, '{{ field.auto_id }}')">Change Image</button>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </section>
+
+            <div class="d-flex flex-column flex-md-row gap-3 pt-3">
+              <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill shadow">
+                <i class="bi bi-save me-2"></i> Update Vehicle
+              </button>
+              <a href="{% url 'adminpanel:vehicle-list' %}" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">Cancel Changes</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.ls-1 { letter-spacing: 1px; }
+.form-select-lg { font-size: 1rem; padding: 0.75rem 1rem; }
+.image-upload-wrapper {
+  border: 2px dashed #cbd5e1;
+  border-radius: 1rem;
+  background: #f8fafc;
+  height: 220px;
+  position: relative;
+  transition: 0.3s;
+  overflow: hidden;
+}
+.image-upload-wrapper:hover { border-color: #3b82f6; background: #fff; }
+.upload-label { width: 100%; height: 100%; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.img-preview { max-height: 140px; width: 100%; object-fit: cover; }
+</style>
+
+<script>
+function handleImagePreview(input) {
+  const wrapper = input.closest('.image-upload-wrapper');
+  const placeholder = wrapper.querySelector('.upload-placeholder');
+  const previewContainer = wrapper.querySelector('.preview-container');
+  const previewImage = wrapper.querySelector('.img-preview');
+
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewImage.src = e.target.result;
+      if(placeholder) placeholder.classList.add('d-none');
+      previewContainer.classList.remove('d-none');
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function removeImage(btn, inputId) {
+  const input = document.getElementById(inputId);
+  input.click(); // Trigger file selection instead of just clearing
+}
+</script>
+
+{% endblock %}
