@@ -25,6 +25,7 @@ urlpatterns = [
     path('',include('accounts.urls')),
     path('',include('bookings.urls')),
     path('',include('adminpanel.urls')),
+    path('',include('search.urls')),
 ]
 
 

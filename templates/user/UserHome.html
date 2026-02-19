@@ -24,30 +24,46 @@
             <span class="d-block mt-2 text-warning small fw-bold"><i class="bi bi-patch-check"></i> 100% Sanitized & Insurance-First Fleet</span>
         </p>
         
-        <div class="search-glass p-2 mb-5 animate-fade-up delay-2 shadow-lg">
-          <div class="row g-0 align-items-center">
-            <div class="col-md-5 border-end border-white-50">
-              <div class="input-group px-3 py-2">
-                <span class="text-white opacity-50"><i class="bi bi-search"></i></span>
-                <input type="text" id="vehicleSearch" class="form-control bg-transparent border-0 text-white placeholder-white shadow-none" placeholder="Search by car name or model...">
+        <form method="GET" action="{% url 'search:search' %}">
+          <div class="search-glass p-2 mb-5 animate-fade-up delay-2 shadow-lg">
+            <div class="row g-0 align-items-center">
+        
+              <!-- 🔍 Search Input -->
+              <div class="col-md-5 border-end border-white-50">
+                <div class="input-group px-3 py-2">
+                  <span class="text-white opacity-50">
+                    <i class="bi bi-search"></i>
+                  </span>
+                  <input 
+                    type="text" 
+                    name="q"
+                    value="{{ request.GET.q }}"
+                    class="form-control bg-transparent border-0 text-white placeholder-white shadow-none" 
+                    placeholder="Search by vehicle name..."
+                  >
+                </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="input-group px-3 py-2">
-                <span class="text-white opacity-50"><i class="bi bi-filter-circle"></i></span>
-                <select class="form-select bg-transparent border-0 text-white shadow-none cursor-pointer" id="categoryFilter">
-                    <option class="text-dark" value="all">Any Category</option>
-                    <option class="text-dark" value="CAR">car</option>
-                    <option class="text-dark" value="BIKE">bike</option>
-                    <option class="text-dark" value="VAN">van</option>
-                </select>
+        
+              <!-- 🚗 Vehicle Type Filter -->
+              <div class="col-md-4">
+                <div class="input-group px-3 py-2">
+                  
+                  
+                </div>
               </div>
-            </div>
-            <div class="col-md-3 p-1">
-              <button class="btn btn-primary w-100 py-3 rounded-3 fw-bold shadow-glow border-0">Find My Ride</button>
+        
+              <!-- 🔎 Submit Button -->
+              <div class="col-md-3 p-1">
+                <button type="submit" 
+                        class="btn btn-primary w-100 py-3 rounded-3 fw-bold shadow-glow border-0">
+                  Find My Ride
+                </button>
+              </div>
+        
             </div>
           </div>
-        </div>
+        </form>
+        
       </div>
       
       <div class="col-lg-5 d-none d-lg-block">

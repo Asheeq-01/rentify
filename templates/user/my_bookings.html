@@ -1,73 +1,95 @@
 {% extends "user/base.html" %}
-{% block content %}
+{% load static %}
 
+{% block content %}
 <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5">
         <div>
-            <h2 class="fw-bold mb-1">My Bookings</h2>
-            <p class="text-muted">Track and manage your vehicle rentals</p>
+            <h2 class="fw-bold text-dark mb-1">My Bookings</h2>
+            <p class="text-muted mb-0">Manage your active rentals and booking history</p>
         </div>
-        <a href="{% url 'bookings:user-home' %}" class="btn btn-primary btn-sm px-4 rounded-pill shadow-sm">Book New Vehicle</a>
+        <div class="mt-3 mt-md-0">
+            <a href="{% url 'bookings:user-home' %}" class="btn btn-dark px-4 py-2 rounded-3 shadow-sm transition-all">
+                <i class="bi bi-plus-lg me-2"></i>New Rental
+            </a>
+        </div>
     </div>
 
     <div class="row g-4">
         {% for booking in bookings %}
         <div class="col-12">
-            <div class="card border-0 shadow-sm overflow-hidden">
+            <div class="card border-0 shadow-sm overflow-hidden booking-card">
                 <div class="card-body p-0">
-                    <div class="row g-0 align-items-center">
+                    <div class="row g-0">
                         
-                        <div class="col-md-1 d-none d-md-block text-center py-4 
-                            {% if booking.status == 'APPROVED' %} bg-success 
-                            {% elif booking.status == 'PENDING' %} bg-warning 
-                            {% elif booking.status == 'RETURNED' %} bg-info 
-                            {% elif booking.status == 'CANCELLED' %} bg-danger 
-                            {% else %} bg-secondary {% endif %}" 
-                            style="opacity: 0.1; min-height: 100%;">
+                        <div class="col-md-3 col-lg-2 bg-light d-flex align-items-center justify-content-center p-3 border-end border-light">
+                            {% if booking.vehicle.image2 %}
+                                <img src="{{ booking.vehicle.image2.url }}" 
+                                     alt="{{ booking.vehicle.name }}" 
+                                     class="img-fluid rounded-3 object-fit-cover" 
+                                     style="max-height: 120px; width: 100%;">
+                            {% else %}
+                                <div class="text-muted text-center">
+                                    <i class="bi bi-truck fs-1 opacity-25"></i>
+                                    <small class="d-block mt-1">No Image</small>
+                                </div>
+                            {% endif %}
                         </div>
 
-                        <div class="col-md-11 p-4">
+                        <div class="col-md-9 col-lg-10 p-4">
                             <div class="row align-items-center">
+                                
                                 <div class="col-lg-3 mb-3 mb-lg-0">
-                                    <h5 class="fw-bold mb-1">{{ booking.vehicle.name }}</h5>
-                                    <span class="badge bg-light text-dark border">{{ booking.vehicle.vehicle_no }}</span>
+                                    <div class="d-flex align-items-center mb-1">
+                                        <h5 class="fw-bold mb-0 text-dark me-2">{{ booking.vehicle.name }}</h5>
+                                        {% if booking.status == 'APPROVED' %}
+                                            <div class="status-dot bg-success shadow-pulse"></div>
+                                        {% endif %}
+                                    </div>
+                                    <span class="text-uppercase small fw-bold text-muted tracking-wider">
+                                        Reg: <span class="text-dark">{{ booking.vehicle.vehicle_no }}</span>
+                                    </span>
                                 </div>
 
                                 <div class="col-lg-4 mb-3 mb-lg-0">
-                                    <div class="d-flex align-items-center">
-                                        <div class="text-center">
-                                            <small class="text-muted d-block text-uppercase fw-semibold">Pickup</small>
-                                            <span class="fw-bold">{{ booking.start_date }}</span>
+                                    <div class="booking-timeline d-flex align-items-center">
+                                        <div class="date-block text-center">
+                                            <span class="d-block small text-muted text-uppercase fw-semibold">Pickup</span>
+                                            <span class="fw-bold">{{ booking.start_date|date:"d M, Y" }}</span>
                                         </div>
-                                        <div class="mx-3 text-muted">→</div>
-                                        <div class="text-center">
-                                            <small class="text-muted d-block text-uppercase fw-semibold">Drop-off</small>
-                                            <span class="fw-bold">{{ booking.end_date }}</span>
+                                        <div class="timeline-divider mx-3 flex-grow-1 border-top border-2 border-light position-relative">
+                                            <i class="bi bi-chevron-right text-muted position-absolute top-50 start-50 translate-middle bg-white px-1"></i>
+                                        </div>
+                                        <div class="date-block text-center">
+                                            <span class="d-block small text-muted text-uppercase fw-semibold">Return</span>
+                                            <span class="fw-bold">{{ booking.end_date|date:"d M, Y" }}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-3 mb-3 mb-lg-0 text-lg-center">
-                                    <div class="d-inline-block">
-                                        <small class="text-muted d-block">Total Paid</small>
-                                        <span class="fs-5 fw-bold text-dark">₹{{ booking.total_amount }}</span>
+                                <div class="col-lg-3 mb-3 mb-lg-0 text-lg-center border-start-lg">
+                                    <div class="d-inline-block text-start text-lg-center">
+                                        <small class="text-muted d-block fw-medium">Total Amount</small>
+                                        <span class="fs-4 fw-black text-dark">₹{{ booking.total_amount }}</span>
                                         {% if booking.fine_amount > 0 %}
-                                            <small class="text-danger d-block">+ ₹{{ booking.fine_amount }} Fine</small>
+                                            <span class="badge bg-danger-subtle text-danger d-block mt-1">
+                                                + ₹{{ booking.fine_amount }} Fine
+                                            </span>
                                         {% endif %}
                                     </div>
                                 </div>
 
                                 <div class="col-lg-2 text-lg-end">
                                     {% if booking.status == 'APPROVED' %}
-                                        <span class="badge rounded-pill bg-success-subtle text-success px-3 py-2">Approved</span>
+                                        <span class="status-badge status-approved">Approved</span>
                                     {% elif booking.status == 'PENDING' %}
-                                        <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis px-3 py-2">Pending</span>
+                                        <span class="status-badge status-pending">Pending</span>
                                     {% elif booking.status == 'RETURNED' %}
-                                        <span class="badge rounded-pill bg-info-subtle text-info-emphasis px-3 py-2">Returned</span>
+                                        <span class="status-badge status-returned">Returned</span>
                                     {% elif booking.status == 'CANCELLED' %}
-                                        <span class="badge rounded-pill bg-danger-subtle text-danger px-3 py-2">Cancelled</span>
+                                        <span class="status-badge status-cancelled">Cancelled</span>
                                     {% else %}
-                                        <span class="badge rounded-pill bg-secondary-subtle text-secondary px-3 py-2">{{ booking.status }}</span>
+                                        <span class="status-badge status-default text-capitalize">{{ booking.status|lower }}</span>
                                     {% endif %}
                                 </div>
                             </div>
@@ -77,27 +99,75 @@
             </div>
         </div>
         {% empty %}
-        <div class="col-12 text-center py-5">
-            <div class="mb-3">
-                <i class="bi bi-calendar-x fs-1 text-muted"></i>
+        <div class="col-12 py-5 text-center">
+            <div class="empty-state-icon mb-4">
+                <i class="bi bi-calendar-event text-light-emphasis display-1"></i>
             </div>
-            <h4 class="text-muted">No bookings found</h4>
-            <p>Ready to hit the road? Your rental history will appear here.</p>
-            <a href="/vehicles" class="btn btn-primary">Browse Vehicles</a>
+            <h4 class="fw-bold">No Bookings Yet</h4>
+            <p class="text-muted">Looks like you haven't booked any rides lately. Let's find you a car!</p>
+            <a href="{% url 'bookings:user-home' %}" class="btn btn-dark btn-lg rounded-pill px-5 mt-3 shadow-sm">Explore Vehicles</a>
         </div>
         {% endfor %}
     </div>
 </div>
 
 <style>
-    /* Professional touches */
-    .card { transition: transform 0.2s ease, shadow 0.2s ease; border-radius: 12px; }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important; }
-    .bg-success-subtle { background-color: #e1f7ec; }
-    .bg-warning-subtle { background-color: #fff8e6; }
-    .bg-info-subtle { background-color: #e7f6f8; }
-    .bg-danger-subtle { background-color: #fceaea; }
-    .bg-secondary-subtle { background-color: #f8f9fa; }
-</style>
+    :root {
+        --bs-success-soft: #e7f5ee;
+        --bs-warning-soft: #fff8e6;
+        --bs-danger-soft: #fbeaea;
+        --bs-info-soft: #eef2ff;
+    }
 
+    .booking-card {
+        border: 1px solid rgba(0,0,0,0.05) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .booking-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.06) !important;
+        border-color: rgba(0,0,0,0.1) !important;
+    }
+
+    /* Professional Status Badges */
+    .status-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 8px 16px;
+        border-radius: 50px;
+        letter-spacing: 0.5px;
+        display: inline-block;
+    }
+
+    .status-approved { background: var(--bs-success-soft); color: #0f5132; }
+    .status-pending { background: var(--bs-warning-soft); color: #856404; }
+    .status-returned { background: var(--bs-info-soft); color: #055160; }
+    .status-cancelled { background: var(--bs-danger-soft); color: #842029; }
+    .status-default { background: #f8f9fa; color: #6c757d; }
+
+    /* Decorative Elements */
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .tracking-wider { letter-spacing: 0.05em; }
+    .fw-black { font-weight: 800; }
+    .transition-all { transition: all 0.2s ease-in-out; }
+
+    /* Shadow Pulse Animation for Approved status */
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.4); }
+        70% { box-shadow: 0 0 0 6px rgba(25, 135, 84, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0); }
+    }
+    .shadow-pulse { animation: pulse 2s infinite; }
+
+    @media (min-width: 992px) {
+        .border-start-lg { border-left: 1px solid #f1f1f1 !important; }
+    }
+</style>
 {% endblock %}

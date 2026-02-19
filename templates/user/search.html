@@ -1,0 +1,139 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+<style>
+    /* Custom Styling for a Premium Card Look */
+    .vehicle-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .vehicle-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.12) !important;
+    }
+
+    .vehicle-img-container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .availability-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+        z-index: 2;
+    }
+
+    .vehicle-price-tag {
+        font-size: 1.25rem;
+        color: #0d6efd;
+        font-weight: 700;
+    }
+
+    .spec-icon {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+
+    .search-bar-custom {
+        border-radius: 30px;
+        padding-left: 20px;
+    }
+</style>
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <form method="GET" action="{% url 'search:search' %}" class="d-flex p-2 bg-white shadow-sm rounded-pill border">
+                <input 
+                    type="text" 
+                    name="q" 
+                    value="{{ query|default:'' }}" 
+                    class="form-control border-0 bg-transparent search-bar-custom" 
+                    placeholder="Find your next ride (e.g. SUV, Tesla, Petrol)..."
+                >
+                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {% if query %}
+        <h5 class="mb-4 text-secondary">
+            Showing results for: <span class="text-dark fw-bold">"{{ query }}"</span>
+        </h5>
+    {% endif %}
+
+    <div class="row">
+        {% if result %}
+            {% for vehicle in result %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 vehicle-card shadow-sm">
+                        
+                        <div class="vehicle-img-container">
+                            {% if vehicle.available %}
+                                <span class="availability-badge bg-success text-white shadow-sm">Available</span>
+                            {% else %}
+                                <span class="availability-badge bg-danger text-white shadow-sm">Booked</span>
+                            {% endif %}
+
+                            {% if vehicle.image1 %}
+                                <img src="{{ vehicle.image1.url }}" class="card-img-top" style="height:220px; object-fit:cover;" alt="{{ vehicle.name }}">
+                            {% else %}
+                                <img src="https://via.placeholder.com/400x220?text=No+Image" class="card-img-top">
+                            {% endif %}
+                        </div>
+
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title fw-bold mb-0 text-truncate" style="max-width: 70%;">{{ vehicle.name }}</h5>
+                                <div class="vehicle-price-tag">₹{{ vehicle.price }}<small class="text-muted" style="font-size: 0.7rem;">/day</small></div>
+                            </div>
+                            
+                            <p class="text-muted small mb-3"><i class="fas fa-hashtag me-1"></i> {{ vehicle.vehicle_no }}</p>
+
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <span class="spec-icon"><i class="fas fa-car me-1"></i> {{ vehicle.get_type_display }}</span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="spec-icon"><i class="fas fa-gas-pump me-1"></i> {{ vehicle.get_fuel_type_display }}</span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="spec-icon"><i class="fas fa-cog me-1"></i> {{ vehicle.get_transmission_display }}</span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="spec-icon"><i class="fas fa-users me-1"></i> {{ vehicle.seats }} Seats</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-0 pb-3 px-3">
+                            <a href="{% url 'bookings:bookingVehicle' vehicle.id%}" class="btn btn-primary w-100 fw-bold rounded-3">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="py-5 text-center">
+                    <img src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png" width="100" class="opacity-25 mb-3">
+                    <h4 class="text-muted">No vehicles found.</h4>
+                    <p class="text-secondary">Try adjusting your keywords or browse all vehicles.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
