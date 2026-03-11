@@ -4,8 +4,10 @@
 {% block content %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
 <link rel="stylesheet" href="{% static 'css/view.css' %}">
+<script src="{% static 'js/bookingvehicle.js' %}" defer></script>
+
+
 <div class="container py-5">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-5">
@@ -71,9 +73,9 @@
             </div>
                     
                     <!-- Image Counter -->
-                    {% if vehicle.image2 %}
+                    {% if vehicle.image1 %}
                     <div class="image-counter">
-                        1 / 3
+                        1
                     </div>
                     {% endif %}
                     
@@ -185,7 +187,9 @@
                 
                 <div class="d-grid gap-3">
                     {% if vehicle.available %}
-                    <a class="btn btn-primary btn-lg py-3 fw-bold rounded-3" id="bookNowBtn" href="{% url 'bookings:book-form' vehicle.id %}">
+                    <a class="btn btn-primary btn-lg py-3 fw-bold rounded-3"
+                        id="bookNowBtn"
+                        href="{% url 'bookings:book-form' vehicle.id %}">
                         <i class="bi bi-calendar-check me-2"></i>
                         Book Now
                     </a>
@@ -267,38 +271,4 @@
     </div>
 </div>
 
-<script src="{% static 'js/bookingview.js' %}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Update image counter
-        const carousel = document.getElementById('vehicleCarousel');
-        if (carousel) {
-            carousel.addEventListener('slid.bs.carousel', function(event) {
-                const activeIndex = event.to;
-                const totalItems = document.querySelectorAll('#vehicleCarousel .carousel-item').length;
-                document.querySelector('.image-counter').textContent = `${activeIndex + 1} / ${totalItems}`;
-            });
-        }
-        
-        // Book Now button functionality
-        const bookNowBtn = document.getElementById('bookNowBtn');
-        if (bookNowBtn) {
-            bookNowBtn.addEventListener('click', function() {
-                // Add booking logic here
-                {% comment %} window.location.href = "{% url 'bookings:booking-form' vehicle.id %}"; {% endcomment %}
-            });
-        }
-        
-        // Add smooth hover effects
-        const cards = document.querySelectorAll('.spec-card');
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-8px)';
-            });
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-    });
-</script>
 {% endblock %}

@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/mybookings.css' %}">
+
+
 <div class="container py-5">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5">
         <div>
@@ -111,63 +114,5 @@
     </div>
 </div>
 
-<style>
-    :root {
-        --bs-success-soft: #e7f5ee;
-        --bs-warning-soft: #fff8e6;
-        --bs-danger-soft: #fbeaea;
-        --bs-info-soft: #eef2ff;
-    }
 
-    .booking-card {
-        border: 1px solid rgba(0,0,0,0.05) !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .booking-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 25px rgba(0,0,0,0.06) !important;
-        border-color: rgba(0,0,0,0.1) !important;
-    }
-
-    /* Professional Status Badges */
-    .status-badge {
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        padding: 8px 16px;
-        border-radius: 50px;
-        letter-spacing: 0.5px;
-        display: inline-block;
-    }
-
-    .status-approved { background: var(--bs-success-soft); color: #0f5132; }
-    .status-pending { background: var(--bs-warning-soft); color: #856404; }
-    .status-returned { background: var(--bs-info-soft); color: #055160; }
-    .status-cancelled { background: var(--bs-danger-soft); color: #842029; }
-    .status-default { background: #f8f9fa; color: #6c757d; }
-
-    /* Decorative Elements */
-    .status-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-    }
-
-    .tracking-wider { letter-spacing: 0.05em; }
-    .fw-black { font-weight: 800; }
-    .transition-all { transition: all 0.2s ease-in-out; }
-
-    /* Shadow Pulse Animation for Approved status */
-    @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.4); }
-        70% { box-shadow: 0 0 0 6px rgba(25, 135, 84, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0); }
-    }
-    .shadow-pulse { animation: pulse 2s infinite; }
-
-    @media (min-width: 992px) {
-        .border-start-lg { border-left: 1px solid #f1f1f1 !important; }
-    }
-</style>
 {% endblock %}

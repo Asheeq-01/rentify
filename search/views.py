@@ -10,7 +10,6 @@ class SearchView(View):
 
         query = request.GET.get('q')
         products = VehicleModel.objects.all()
-        
         if query:
             products = VehicleModel.objects.annotate(
                 price_str=Cast('price', CharField())).filter(
@@ -21,8 +20,5 @@ class SearchView(View):
                 Q(transmission__icontains=query) |
                 Q(price_str__icontains=query)
             ).distinct()
-        context = {
-            'result': products,
-            'query': query
-        }
+        context = {'result': products,'query': query}
         return render(request,'user/search.html', context)

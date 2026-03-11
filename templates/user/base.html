@@ -12,115 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --primary-blue: #2563eb;
-            --dark-navy: #0f172a;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-            color: var(--dark-navy);
-            padding-top: 70px; /* Offset for sticky-top navbar */
-        }
-
-        /* --- Modern Navbar Style --- */
-        .navbar-custom {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .navbar-brand {
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: var(--dark-navy) !important;
-            font-size: 1.5rem;
-        }
-
-        .navbar-brand span {
-            color: var(--primary-blue);
-        }
-
-        .nav-link {
-            font-weight: 600;
-            color: #475569 !important;
-            padding: 0.5rem 1rem !important;
-            margin: 0 0.2rem;
-            position: relative;
-            transition: color 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-blue) !important;
-        }
-
-        /* Animated Underline Effect */
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background-color: var(--primary-blue);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 70%;
-        }
-
-        /* Account Button Style */
-        .btn-account {
-            background: #f1f5f9;
-            border-radius: 12px;
-            padding: 8px 16px;
-            color: var(--dark-navy);
-            font-weight: 600;
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .btn-account:hover {
-            background: #e2e8f0;
-            border-color: #cbd5e1;
-        }
-
-        .dropdown-menu {
-            border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-radius: 15px;
-            padding: 10px;
-            margin-top: 15px;
-        }
-
-        .dropdown-item {
-            border-radius: 8px;
-            padding: 8px 15px;
-            font-weight: 500;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f1f5f9;
-            color: var(--primary-blue);
-        }
-
-        /* Mobile Toggler */
-        .navbar-toggler {
-            border: none;
-            padding: 0;
-        }
-        .navbar-toggler:focus {
-            box-shadow: none;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    
     {% block extra_css %}{% endblock %}
 </head>
 
@@ -234,5 +127,68 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     {% block extra_js %}{% endblock %}
+
+
+
+
+
+
+    <!-- 💬 CHATBOT BUTTON -->
+<div id="chatbot-btn" onclick="toggleChatbot()">
+    💬
+  </div>
+  
+  <!-- 💬 CHATBOT WINDOW -->
+  <div id="chatbot-window">
+    <div class="chat-header">
+      Rentify Assistant
+      <span onclick="toggleChatbot()">✖</span>
+    </div>
+  
+    <div id="chat-messages" class="chat-messages">
+      <div class="bot-msg">Hi 👋 How can I help you today?</div>
+    </div>
+  
+    <div class="chat-input">
+      <input id="chat-input" type="text" placeholder="Type a message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleChatbot(){
+      let win = document.getElementById("chatbot-window");
+      win.style.display = win.style.display === "flex" ? "none" : "flex";
+    }
+    
+    function addMessage(text, cls){
+      let msg = document.createElement("div");
+      msg.className = cls;
+      msg.innerText = text;
+      document.getElementById("chat-messages").appendChild(msg);
+    }
+    
+    function sendMessage(){
+      let input = document.getElementById("chat-input");
+      let text = input.value.trim();
+      if(!text) return;
+    
+      addMessage(text, "user-msg");
+      input.value="";
+    
+      fetch("/chatbot/",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "X-CSRFToken":"{{ csrf_token }}"
+        },
+        body:JSON.stringify({message:text})
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        addMessage(data.reply,"bot-msg");
+      });
+    }
+    </script>
 </body>
 </html>

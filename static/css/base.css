@@ -1,0 +1,216 @@
+:root {
+    --primary-blue: #2563eb;
+    --dark-navy: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f8fafc;
+    color: var(--dark-navy);
+    padding-top: 70px; /* Offset for sticky-top navbar */
+}
+
+/* --- Modern Navbar Style --- */
+.navbar-custom {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--dark-navy) !important;
+    font-size: 1.5rem;
+}
+
+.navbar-brand span {
+    color: var(--primary-blue);
+}
+
+.nav-link {
+    font-weight: 600;
+    color: #475569 !important;
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.2rem;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-blue) !important;
+}
+
+/* Animated Underline Effect */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--primary-blue);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+    width: 70%;
+}
+
+/* Account Button Style */
+.btn-account {
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 8px 16px;
+    color: var(--dark-navy);
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-account:hover {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.dropdown-item {
+    border-radius: 8px;
+    padding: 8px 15px;
+    font-weight: 500;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f5f9;
+    color: var(--primary-blue);
+}
+
+/* Mobile Toggler */
+.navbar-toggler {
+    border: none;
+    padding: 0;
+}
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+
+
+
+:root {
+    --primary-blue: #2563eb;
+    --dark-navy: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f8fafc;
+    color: var(--dark-navy);
+    padding-top: 70px; /* Offset for sticky-top navbar */
+}
+
+/* --- Modern Navbar Style --- */
+.navbar-custom {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--dark-navy) !important;
+    font-size: 1.5rem;
+}
+
+.navbar-brand span {
+    color: var(--primary-blue);
+}
+
+.nav-link {
+    font-weight: 600;
+    color: #475569 !important;
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.2rem;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-blue) !important;
+}
+
+/* Animated Underline Effect */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--primary-blue);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+    width: 70%;
+}
+
+/* Account Button Style */
+.btn-account {
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 8px 16px;
+    color: var(--dark-navy);
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-account:hover {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.dropdown-item {
+    border-radius: 8px;
+    padding: 8px 15px;
+    font-weight: 500;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f5f9;
+    color: var(--primary-blue);
+}
+
+/* Mobile Toggler */
+.navbar-toggler {
+    border: none;
+    padding: 0;
+}
+.navbar-toggler:focus {
+    box-shadow: none;
+}

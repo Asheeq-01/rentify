@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/paymentsuccess.css' %}">
+
+
 <div class="container">
     <div class="row justify-content-center align-items-center" style="min-height: 85vh;">
         <div class="col-md-6 col-lg-5">
@@ -58,11 +61,5 @@
     </div>
 </div>
 
-<style>
-    /* Subtle polish for professional feel */
-    body { background-color: #f8f9fa; }
-    .card { transition: transform 0.2s ease-in-out; }
-    .btn-dark { background-color: #1a1d20; border: none; }
-    .btn-dark:hover { background-color: #000; transform: translateY(-1px); }
-</style>
+
 {% endblock %}

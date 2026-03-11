@@ -1,5 +1,9 @@
 {% extends "adminView/base.html" %}
+{% load static %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/addvehicle.css' %}">
+<script src="{% static 'js/addvehicle.js' %}" defer></script>
+
 
 <div class="container-fluid px-4 py-5 bg-light">
   <div class="row justify-content-center">
@@ -12,22 +16,6 @@
           <li class="breadcrumb-item active text-primary" aria-current="page">Add New</li>
         </ol>
       </nav>
-
-      {% comment %} {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0 rounded-3 mb-4" role="alert">
-            <div class="d-flex align-items-center">
-              {% if message.tags == 'success' %}
-                <i class="bi bi-check-circle-fill fs-4 me-3 text-success"></i>
-              {% else %}
-                <i class="bi bi-exclamation-triangle-fill fs-4 me-3 text-warning"></i>
-              {% endif %}
-              <div>{{ message }}</div>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
-      {% endif %} {% endcomment %}
 
       <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
         
@@ -210,54 +198,7 @@
   </div>
 </div>
 
-<style>
-.ls-1 { letter-spacing: 1px; }
-.form-select-lg { font-size: 1rem; padding: 0.75rem 1rem; }
-.image-upload-wrapper {
-  border: 2px dashed #cbd5e1;
-  border-radius: 1rem;
-  background: #f8fafc;
-  height: 200px;
-  position: relative;
-  transition: 0.3s;
-}
-.image-upload-wrapper:hover { border-color: #6366f1; background: #fff; }
-.upload-label { width: 100%; height: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.img-preview { max-height: 140px; object-fit: contain; }
-</style>
 
-<script>
-function handleImagePreview(input) {
-  const wrapper = input.closest('.image-upload-wrapper');
-  const placeholder = wrapper.querySelector('.upload-placeholder');
-  const previewContainer = wrapper.querySelector('.preview-container');
-  const previewImage = wrapper.querySelector('.img-preview');
 
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      previewImage.src = e.target.result;
-      placeholder.classList.add('d-none');
-      previewContainer.classList.remove('d-none');
-    }
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-function removeImage(btn, inputId) {
-  const input = document.getElementById(inputId);
-  input.value = '';
-  const wrapper = btn.closest('.image-upload-wrapper');
-  wrapper.querySelector('.preview-container').classList.add('d-none');
-  wrapper.querySelector('.upload-placeholder').classList.remove('d-none');
-}
-
-function resetPreviews() {
-  setTimeout(() => {
-    document.querySelectorAll('.preview-container').forEach(el => el.classList.add('d-none'));
-    document.querySelectorAll('.upload-placeholder').forEach(el => el.classList.remove('d-none'));
-  }, 10);
-}
-</script>
 
 {% endblock %}

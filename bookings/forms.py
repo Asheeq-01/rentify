@@ -3,23 +3,26 @@ from .models import VehicleModel,BookingModel,OrderModel
 from datetime import date
 
 class BookingForm(forms.ModelForm):
+
     class Meta:
-        model=BookingModel
+        model = BookingModel
         fields = ['start_date', 'end_date']
         widgets = {
             'start_date': forms.DateInput(
                 attrs={
-                    'type': 'date', 
+                    'type': 'date',
                     'min': date.today().isoformat(),
                     'class': 'form-control',
+                    'id': 'start_date',
                     'required': True
                 }
             ),
             'end_date': forms.DateInput(
                 attrs={
-                    'type': 'date', 
+                    'type': 'date',
                     'min': date.today().isoformat(),
                     'class': 'form-control',
+                    'id': 'end_date',
                     'required': True
                 }
             ),

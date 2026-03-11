@@ -1,0 +1,27 @@
+/* Table Header Styling */
+.table thead th {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    background-color: #212529;
+}
+
+/* Row Hover Effect */
+.table-hover tbody tr:hover {
+    background-color: #f8fafc;
+    transition: 0.2s ease-in-out;
+}
+
+/* Alignment and Spacing */
+.table td {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    vertical-align: middle;
+}
+
+/* Status Badge Refinement */
+.badge {
+    font-weight: 500;
+    font-size: 0.75rem;
+}

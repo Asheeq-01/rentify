@@ -11,6 +11,7 @@ urlpatterns = [
     path('payment-callback/',views.PaymentSuccessView.as_view(),name='payment_callback'),
     path('payment-success/',views.PaymentSuccessPage.as_view(),name='payment_success'),
     path('my-bookings/',views.MyBookingsView.as_view(),name='my-bookings'),
+    path("chatbot/",views.ChatbotView.as_view(), name="chatbot"),
 ]
 
 
