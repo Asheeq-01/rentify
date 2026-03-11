@@ -1,9 +1,3 @@
-Great additions, Asheeq 👍
-A **chatbot + chat with agent** feature makes your project look **more advanced and interactive**. I updated your **final GitHub note** to include these features.
-
-You can paste this directly into **README.md**.
-
----
 
 # 🚗 Rentify – Vehicle Rental Management System
 
