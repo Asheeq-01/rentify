@@ -51,11 +51,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts','bookings',
+    'bookings',
     'crispy_forms',
     'crispy_bootstrap5',
     'adminpanel',
     'search',
+    'accounts.apps.AccountsConfig',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

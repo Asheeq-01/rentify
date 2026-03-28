@@ -50,3 +50,42 @@ class LogoutView(View):
         return redirect('accounts:login')
             
 
+from django.views import View
+from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import UserUpdateForm, ProfileUpdateForm
+
+from .models import Profile
+
+class ProfileView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        profile, created = Profile.objects.get_or_create(user=request.user)
+
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=profile)
+
+        return render(request, 'accounts/profile.html', {
+            'u_form': u_form,
+            'p_form': p_form
+        })
+
+    def post(self, request):
+        profile, created = Profile.objects.get_or_create(user=request.user)
+
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(
+            request.POST,
+            request.FILES,
+            instance=profile
+        )
+
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            return redirect('accounts:profile')  # FIXED URL
+
+        return render(request, 'accounts/profile.html', {
+            'u_form': u_form,
+            'p_form': p_form
+        })

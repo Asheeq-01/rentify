@@ -155,7 +155,7 @@ class MyBookingsView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ChatbotView(View):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         try:
             data = json.loads(request.body)
             msg = data.get("message", "").lower()

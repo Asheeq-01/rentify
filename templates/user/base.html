@@ -60,20 +60,77 @@
             <ul class="navbar-nav ms-auto align-items-center">
               {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle btn-account d-flex align-items-center" href="#" id="userDrop" role="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle me-2 fs-5"></i>{{ user.username|capfirst }}
-                    </a>
+                  <style>
+                    /* Premium Hover Effect for the Navbar Button */
+                    .btn-account-pill {
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
+                        padding: 4px 14px 4px 4px; /* Less padding on the left to hug the image */
+                        border-radius: 50px;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        text-decoration: none;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+                    }
+                
+                    .btn-account-pill:hover {
+                        background: #f8fafc;
+                        border-color: #cbd5e1;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+                        transform: translateY(-1px);
+                    }
+                
+                    .nav-profile-img {
+                        object-fit: cover;
+                        border: 2px solid #fff;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+                
+                    /* Remove the default Bootstrap arrow if you want a cleaner look */
+                    .dropdown-toggle::after {
+                        vertical-align: middle;
+                        color: #94a3b8;
+                        margin-left: 8px;
+                    }
+                </style>
+                
+                <a class="nav-link dropdown-toggle btn-account-pill d-flex align-items-center" 
+                   href="#" 
+                   id="userDrop" 
+                   role="button" 
+                   data-bs-toggle="dropdown" 
+                   aria-expanded="false">
+                    
+                    <div class="me-2">
+                        {% if user.profile.profile_image and user.profile.profile_image.url %}
+                            <img src="{{ user.profile.profile_image.url }}" 
+                                 width="35" height="35" 
+                                 class="rounded-circle nav-profile-img" 
+                                 alt="User">
+                        {% else %}
+                            <img src="/static/images/default.png" 
+                                 width="35" height="35" 
+                                 class="rounded-circle nav-profile-img" 
+                                 alt="Default">
+                        {% endif %}
+                    </div>
+                
+                    <span class="fw-bold text-dark small">
+                        {{ user.username|capfirst }}
+                    </span>
+                </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDrop">
-                        {% comment %} <li>
-                            <a class="dropdown-item" href="{% url 'bookings:my-booking' %}">
-                                <i class="bi bi-calendar-check me-2"></i> My Bookings
-                            </a>
-                        </li> {% endcomment %}
                         <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="bi bi-person-gear me-2"></i> Profile Settings
-                            </a>
-                        </li>
+                          <a class="dropdown-item" href="{% url 'accounts:profile' %}">
+                              
+                              {% if user.profile.profile_image and user.profile.profile_image.url %}
+                                  <img src="{{ user.profile.profile_image.url }}" width="40" height="40" class="rounded-circle">
+                              {% else %}
+                                  <img src="/static/images/default.png" width="40" height="40" class="rounded-circle">
+                              {% endif %}
+                              
+                              Profile Settings
+                          </a>
+                      </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}">
